@@ -1,35 +1,37 @@
-#ifndef _BINARY_TREES_H_
-#define _BINARY_TREES_H_
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stddef.h>
+#include "binary_trees.h"
 
 /**
- * struct binary_tree_s - Binary tree node
+ * binary_tree_node - creates a binary tree node
+ * @parent: pointer to the parent node of the node to create
+ * @value: is the value to put in the new node
  *
- * @n: Integer stored in the node
- * @parent: Pointer to the parent node
- * @left: Pointer to the left child node
- * @right: Pointer to the right child node
+ * Return:  pointer to the new node, or NULL on failure
  */
-typedef struct binary_tree_s
+
+binary_tree_t *binary_tree_node(binary_tree_t *parent, int value)
 {
-	int n;
-	struct binary_tree_s *parent;
-	struct binary_tree_s *left;
-	struct binary_tree_s *right;
-} binary_tree_t;
+	binary_tree_t *new_b_node = malloc(sizeof(binary_tree_t));
 
-typedef struct binary_tree_s avl_t;
-typedef struct binary_tree_s bst_t;
-typedef struct binary_tree_s heap_t;
+	if (new_b_node == NULL)
+	{
+		free(new_b_node);
+		return (NULL);
+	}
 
+	new_b_node->n = value;
+	new_b_node->left = NULL;
+	new_b_node->right = NULL;
+	new_b_node->parent = parent;
 
+	if (parent)
+	{
+		if (!parent->left)
+			parent->left = new_b_node;
+		else if (!parent->right)
+			parent->right = new_b_node;
+		else
+			return (NULL);
+	}
 
-
-void binary_tree_print(const binary_tree_t *tree);
-void binary_tree_print(const binary_tree_t *tree);
-binary_tree_t *binary_tree_node(binary_tree_t *parent, int value);
-
-#endif /* _BINARY_TREES_H_ */
+	return (new_b_node);
+}
